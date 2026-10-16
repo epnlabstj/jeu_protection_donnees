@@ -1,0 +1,417 @@
+{
+  "affaires": [
+    {
+      "id": "clara",
+      "nom": "Affaire 1 : Clara - Phishing & Mots de Passe",
+      "description": "Aidez Clara à examiner ses e-mails et publications pour sécuriser ses comptes.",
+      "briefing": "Bienvenue dans cette enquête, Détective ! Face à un e-mail suspect ou un message alarmiste, gardez toujours à l'esprit la règle d'or : prenez le temps de respirer. Les escrocs misent tout sur l'urgence et la panique.",
+      "suspect": "Clara",
+      "emails": [
+        {
+          "id": 1,
+          "sujet": "📦 Colis en attente de livraison - Frais requis",
+          "expediteur": "service@colis-rapide-suivi-2026.com",
+          "message": "Bonjour Clara, votre colis est bloqué en douane. Cliquez ici pour régler 1,99€ de frais : http://colis-rapide-suivi-2026.com",
+          "estPiege": true,
+          "explication": "Piège ! Adresse e-mail et domaine frauduleux."
+        },
+        {
+          "id": 2,
+          "sujet": "🧾 Facture électricité EDF",
+          "expediteur": "ne-pas-repondre@edf.fr",
+          "message": "Votre facture du mois est disponible dans votre espace client officiel.",
+          "estPiege": false,
+          "explication": "E-mail légitime provenant du domaine officiel edf.fr."
+        }
+      ],
+      "reseauSocialScenarios": [
+        {
+          "titre": "Photo de vacances & Oversharing",
+          "contenu": "Trop contente d'être à l'hôtel Le Grand Bleu, chambre 402 avec vue sur le port ! 🌴🌊",
+          "question": "Quelle information critique a été imprudemment révélée ?",
+          "options": [
+            { "texte": "Le nom de son animal", "correct": false },
+            { "texte": "Sa position exacte en temps réel et son numéro de chambre", "correct": true }
+          ],
+          "explication": "Exact ! Divulguer sa position en direct expose à des risques de cambriolage."
+        }
+      ],
+      "sitesWeb": [
+        {
+          "url": "http://www.banque-secure-connexion-client-2026.com/login",
+          "nom": "Portail Bancaire en Ligne",
+          "estSecurise": false,
+          "indices": ["Absence de HTTPS", "Fautes d'orthographe dans l'URL"]
+        }
+      ],
+      "chatMessages": [
+        {
+          "expediteur": "Inconnu (Marc)",
+          "message": "Salut Clara, tu te souviens de moi ? File-moi ton nouveau numéro !",
+          "estSuspect": true,
+          "conseil": "Attention au social engineering : ne jamais donner d'informations personnelles."
+        }
+      ]
+    },
+    {
+      "id": "lucas",
+      "nom": "Affaire 2 : Lucas - Le Piège du Faux Wi-Fi Public",
+      "description": "Lucas s'est connecté à un réseau Wi-Fi gratuit dans un café et ses mots de passe ont été interceptés.",
+      "briefing": "Sur un réseau Wi-Fi public ou ouvert, restez vigilant : vos données voyagent en clair si elles ne sont pas chiffrées.",
+      "suspect": "Lucas",
+      "emails": [
+        {
+          "id": 1,
+          "sujet": "🔒 Réinitialisation de mot de passe demandée",
+          "expediteur": "no-reply@mon-reseau-social.com",
+          "message": "Une demande de réinitialisation de mot de passe a été émise suite à une connexion inhabituelle.",
+          "estPiege": false,
+          "explication": "E-mail légitime d'alerte suite à l'interception de session sur le réseau Wi-Fi !"
+        }
+      ],
+      "reseauSocialScenarios": [
+        {
+          "titre": "Wi-Fi Gratuit 'Café_Gourmand_Free'",
+          "contenu": "Lucas se connecte à un réseau Wi-Fi ouvert sans mot de passe et consulte ses comptes.",
+          "question": "Quelle est l'erreur commise par Lucas ?",
+          "options": [
+            { "texte": "Naviguer sans utiliser de VPN ou consulter des comptes sensibles sur un Wi-Fi ouvert", "correct": true },
+            { "texte": "Utiliser un ordinateur portable au lieu d'une tablette", "correct": false }
+          ],
+          "explication": "Exact ! Un réseau Wi-Fi non sécurisé permet d'intercepter les données."
+        }
+      ],
+      "sitesWeb": [
+        {
+          "url": "http://wifi-portal-login-free-connect.net",
+          "nom": "Portail Wi-Fi Captif Suspect",
+          "estSecurise": false,
+          "indices": ["Demande de saisir son mot de passe de messagerie"]
+        }
+      ],
+      "chatMessages": [
+        {
+          "expediteur": "Admin Wi-Fi Café",
+          "message": "Pour continuer à naviguer, saisissez votre mot de passe e-mail.",
+          "estSuspect": true,
+          "conseil": "Un portail Wi-Fi ne doit jamais exiger vos mots de passe personnels."
+        }
+      ]
+    },
+    {
+      "id": "sarah",
+      "nom": "Affaire 3 : Sarah - L'Arnaque de la Fausse Marketplace",
+      "description": "Sarah voulait acheter une console à prix bradé sur un site d'annonces d'occasion.",
+      "briefing": "Les prix trop attractifs et l'exigence de sortir d'une plateforme sécurisée sont les indices évidents d'une escroquerie.",
+      "suspect": "Sarah",
+      "emails": [
+        {
+          "id": 1,
+          "sujet": "💸 Confirmation de paiement par coupon PCS / Neosurf",
+          "expediteur": "service-paiement-securise@market-occaz-express.com",
+          "message": "Achetez 200€ de recharges prépayées et envoyez les codes pour débloquer l'envoi.",
+          "estPiege": true,
+          "explication": "Piège classique ! Les coupons prépayés sont irréversibles."
+        }
+      ],
+      "reseauSocialScenarios": [
+        {
+          "titre": "Annonce de vente ultra-alléchante",
+          "contenu": "Console neuve vendue 100€ au lieu de 500€. Paiement urgent hors plateforme.",
+          "question": "Quel indice montre clairement une escroquerie ?",
+          "options": [
+            { "texte": "Le prix anormalement bas combiné à la sortie du site officiel", "correct": true },
+            { "texte": "La photo de la console", "correct": false }
+          ],
+          "explication": "Un prix dérisoire garantit l'arnaque."
+        }
+      ],
+      "sitesWeb": [
+        {
+          "url": "http://www.leboncoin-paiement-securise.info",
+          "nom": "Faux Portail de Paiement Marketplace",
+          "estSecurise": false,
+          "indices": ["Domaine suspect", "Demande de codes de coupons"]
+        }
+      ],
+      "chatMessages": [
+        {
+          "expediteur": "Vendeur_Console99",
+          "message": "Envoyez-moi les numéros de coupons par SMS et je vous poste le colis !",
+          "estSuspect": true,
+          "conseil": "Ne transmettez jamais de codes de recharge."
+        }
+      ]
+    },
+    {
+      "id": "alex",
+      "nom": "Affaire 4 : Alex - Faux Support Technique & Ransomware",
+      "description": "Un message effrayant est apparu sur l'écran d'Alex indiquant que son PC était bloqué.",
+      "briefing": "Face à une pop-up bloquante ou une alerte sonore agressive, ne cédez pas à la panique et fermez simplement le navigateur.",
+      "suspect": "Alex",
+      "emails": [
+        {
+          "id": 1,
+          "sujet": "🚨 URGENCE : Support Windows - Infection détectée",
+          "expediteur": "support-technique-urgence@windows-helpline-center.com",
+          "message": "Appelez le 08 99 XX XX XX pour débloquer votre ordinateur.",
+          "estPiege": true,
+          "explication": "Faux support technique ! Microsoft n'affiche jamais de numéro à appeler."
+        }
+      ],
+      "reseauSocialScenarios": [
+        {
+          "titre": "Alerte Pop-up Bloquante",
+          "contenu": "Écran rouge clignotant : 'Votre ordinateur est infecté par un virus ! Appelez le support.'",
+          "question": "Quelle est la bonne réaction ?",
+          "options": [
+            { "texte": "Fermer le navigateur (Alt+F4) sans appeler", "correct": true },
+            { "texte": "Appeler le numéro indiqué", "correct": false }
+          ],
+          "explication": "C'est une simple page web conçue pour effrayer."
+        }
+      ],
+      "sitesWeb": [
+        {
+          "url": "http://www.alert-system-warning-microsoft.online",
+          "nom": "Page de Fausse Alerte Virus",
+          "estSecurise": false,
+          "indices": ["Numéro surtaxé", "Faux logos"]
+        }
+      ],
+      "chatMessages": [
+        {
+          "expediteur": "Technicien_WinSupport",
+          "message": "Installez Anydesk pour que je nettoie votre disque dur.",
+          "estSuspect": true,
+          "conseil": "Ne laissez jamais un inconnu prendre le contrôle de votre machine."
+        }
+      ]
+    },
+    {
+      "id": "julie",
+      "nom": "Affaire 5 : Julie - Usurpation d'Identité & SIM Swapping",
+      "description": "Julie a perdu le réseau sur son téléphone et ses comptes ont été piratés.",
+      "briefing": "Protégez vos pièces d'identité et ne publiez jamais vos documents officiels en ligne.",
+      "suspect": "Julie",
+      "emails": [
+        {
+          "id": 1,
+          "sujet": "📱 Confirmation de changement de carte SIM",
+          "expediteur": "service-client@mon-operateur-mobile.fr",
+          "message": "Votre demande de nouvelle carte SIM eSIM a été validée.",
+          "estPiege": false,
+          "explication": "Alerte légitime suite à une tentative de SIM Swapping."
+        }
+      ],
+      "reseauSocialScenarios": [
+        {
+          "titre": "Photo de carte d'identité postée par erreur",
+          "contenu": "Julie a publié une photo de son passeport pour fêter son voyage.",
+          "question": "Pourquoi cette publication était-elle dangereuse ?",
+          "options": [
+            { "texte": "Elle fournit tous les justificatifs pour usurper son identité", "correct": true },
+            { "texte": "Elle indique son signe astrologique", "correct": false }
+          ],
+          "explication": "Publier des pièces d'identité permet aux pirates de détourner votre ligne."
+        }
+      ],
+      "sitesWeb": [
+        {
+          "url": "https://www.mon-operateur-mobile.fr",
+          "nom": "Espace Client Opérateur Mobile",
+          "estSecurise": true,
+          "indices": ["Site officiel"]
+        }
+      ],
+      "chatMessages": [
+        {
+          "expediteur": "Operateur_Mobile_Assistance",
+          "message": "Saisissez votre code SMS pour valider la mise à jour.",
+          "estSuspect": true,
+          "conseil": "Ne partagez jamais vos codes de validation SMS."
+        }
+      ]
+    },
+    {
+      "id": "thomas",
+      "nom": "Affaire 6 : Thomas - Usurpation RH & Faux Ordre de Virement",
+      "description": "Thomas a reçu un e-mail prétendant venir de la direction pour un virement urgent.",
+      "briefing": "L'urgence et le secret sont les deux leviers favoris des escrocs en entreprise (arnaque au président).",
+      "suspect": "Thomas",
+      "emails": [
+        {
+          "id": 1,
+          "sujet": "🔒 CONFIDENTIEL : Virement urgent rachat concurrent",
+          "expediteur": "direction-cabinet-ceo@entreprise-holdings.com",
+          "message": "Thomas, effectuez un virement de 15 000€ sur ce RIB étranger immédiatement.",
+          "estPiege": true,
+          "explication": "Arnaque au président ! Validez toujours par une autre voie officielle."
+        }
+      ],
+      "reseauSocialScenarios": [
+        {
+          "titre": "Organigramme publié sur LinkedIn",
+          "contenu": "Publication détaillant l'organisation exacte du service comptabilité.",
+          "question": "Quel est le risque de ce type de publication ?",
+          "options": [
+            { "texte": "Il permet de cibler précisément les employés habilités à faire des virements", "correct": true },
+            { "texte": "Il donne des idées de CV", "correct": false }
+          ],
+          "explication": "L'ingénierie sociale se nourrit des organigrammes professionnels."
+        }
+      ],
+      "sitesWeb": [
+        {
+          "url": "http://www.banque-virement-international.com",
+          "nom": "Plateforme Virement Externe",
+          "estSecurise": false,
+          "indices": ["Domaine non officiel"]
+        }
+      ],
+      "chatMessages": [
+        {
+          "expediteur": "PDG (Usurpé)",
+          "message": "Thomas, tu as fait le virement ? N'en parle à personne.",
+          "estSuspect": true,
+          "conseil": "Méfiez-vous des demandes de secret absolu."
+        }
+      ]
+    },
+    {
+      "id": "hugo",
+      "nom": "Affaire 7 : Hugo - Le Faux Recrutement & Travail à Domicile",
+      "description": "Hugo a postulé à une offre de travail à distance très rémunératrice exigeant l'achat de matériel.",
+      "briefing": "Un recruteur légitime ne vous demandera JAMAIS d'avancer de l'argent ou d'incaisser un chèque avant de commencer.",
+      "suspect": "Hugo",
+      "emails": [
+        {
+          "id": 1,
+          "sujet": "💼 Offre d'emploi validée - Avance pour matériel informatique",
+          "expediteur": "recrutement@international-job-remote.com",
+          "message": "Nous vous envoyons un chèque de 2000€. Déposez-le et renvoyez 1500€ à notre fournisseur d'ordinateurs.",
+          "estPiege": true,
+          "explication": "Arnaque au faux chèque en bois ! Le chèque sera rejeté plus tard par la banque."
+        }
+      ],
+      "reseauSocialScenarios": [
+        {
+          "titre": "Offre d'emploi sponsorisée sur Instagram",
+          "contenu": "Gagnez 500€ par jour en travaillant 2h depuis votre canapé ! Aucun diplôme requis.",
+          "question": "Pourquoi cette annonce est-elle suspecte ?",
+          "options": [
+            { "texte": "Le salaire démesuré par rapport au travail promis et l'absence de qualification", "correct": true },
+            { "texte": "Le texte est écrit en français", "correct": false }
+          ],
+          "explication": "Un salaire mirobolant sans effort est le signe caractéristique d'un piège financière."
+        }
+      ],
+      "sitesWeb": [
+        {
+          "url": "http://www.recrutement-express-emploi-2026.net",
+          "nom": "Plateforme de Recrutement Suspecte",
+          "estSecurise": false,
+          "indices": ["Non sécurisé HTTP", "Formulaire demandant un RIB et numéro d'assurance sociale d'emblée"]
+        }
+      ],
+      "chatMessages": [
+        {
+          "expediteur": "Recruteur RH (LinkedIn)",
+          "message": "Saisissez rapidement vos identifiants bancaires pour valider votre contrat de travail.",
+          "estSuspect": true,
+          "conseil": "Ne communiquez jamais vos identifiants bancaires lors d'une embauche."
+        }
+      ]
+    },
+    {
+      "id": "leila",
+      "nom": "Affaire 8 : Leïla - L'Arnaque à l'Amour & Catfishing",
+      "description": "Leïla a fait la connaissance d'un admirateur en ligne qui lui demande de l'argent pour une urgence.",
+      "briefing": "Dans les arnaques sentimentales, l'escroc gagne votre confiance puis prétexte un drame soudain exigeant de l'argent.",
+      "suspect": "Leïla",
+      "emails": [
+        {
+          "id": 1,
+          "sujet": "💌 Mon amour, j'ai eu un accident à l'étranger...",
+          "expediteur": "julien.dupont.voyageur@gmail-secure.com",
+          "message": "Mes papiers et ma carte bancaire ont été volés. Peux-tu m'envoyer 500€ par virement Western Union ?",
+          "estPiege": true,
+          "explication": "Catfishing classique ! Ne transmettez jamais d'argent à une personne jamais rencontrée en vrai."
+        }
+      ],
+      "reseauSocialScenarios": [
+        {
+          "titre": "Inconnu très séduisant en message privé",
+          "contenu": "Un profil avec 2 photos et zéro ami commun vous envoie des déclarations passionnées au bout de 2 jours.",
+          "question": "Quelle est la meilleure attitude à adopter ?",
+          "options": [
+            { "texte": "Analyser les photos avec une recherche d'image inversée pour démasquer le faux profil", "correct": true },
+            { "texte": "Lui envoyer de l'argent tout de suite", "correct": false }
+          ],
+          "explication": "Les photos sont très souvent volées sur les comptes d'influenceurs ou de mannequins."
+        }
+      ],
+      "sitesWeb": [
+        {
+          "url": "http://www.transfert-argent-urgence-international.com",
+          "nom": "Site de Transfert d'Argent Mandat Cash",
+          "estSecurise": false,
+          "indices": ["Demande de numéros de recharge de carte prépayée"]
+        }
+      ],
+      "chatMessages": [
+        {
+          "expediteur": "Julien (Match Rencontre)",
+          "message": "Achete des couponsPCS au bureau de tabac et donne-moi les codes pour que je puisse prendre mon avion !",
+          "estSuspect": true,
+          "conseil": "Les escrocs sentimentaux exigent souvent des coupons PCS irréversibles."
+        }
+      ]
+    },
+    {
+      "id": "antoine",
+      "nom": "Affaire 9 : Antoine - Attaque par Clé USB Piégée",
+      "description": "Antoine a trouvé une clé USB sur le parking de son entreprise et l'a branchée sur son PC.",
+      "briefing": "Une clé USB trouvée par terre ne doit JAMAIS être branchée : elle peut contenir des scripts malveillants automatisés.",
+      "suspect": "Antoine",
+      "emails": [
+        {
+          "id": 1,
+          "sujet": "📁 Rapport d'analyse Sécurité - Clé USB non autorisée",
+          "expediteur": "security-alert@entreprise-officiel.fr",
+          "message": "Une clé USB non vérifiée a exécuté un script sur votre poste. Contactez immédiatement le DSI.",
+          "estPiege": false,
+          "explication": "Alerte légitime de l'équipe de cybersécurité interne !"
+        }
+      ],
+      "reseauSocialScenarios": [
+        {
+          "titre": "Objet trouvé sur le parking",
+          "contenu": "Clé USB étiquetée 'Salaires & Bonus 2026' déposée sur la table de la pause café.",
+          "question": "Que devez-vous faire ?",
+          "options": [
+            { "texte": "La remettre immédiatement au service informatique sans la brancher", "correct": true },
+            { "texte": "La brancher sur son ordinateur pour savoir à qui elle appartient", "correct": false }
+          ],
+          "explication": "Technique de 'USB Drop' : le pirate utilise la curiosité pour infecter le réseau."
+        }
+      ],
+      "sitesWeb": [
+        {
+          "url": "https://www.entreprise-officiel.fr/it-security",
+          "nom": "Portail Sécurité IT Officiel",
+          "estSecurise": true,
+          "indices": ["Site interne sécurisé HTTPS"]
+        }
+      ],
+      "chatMessages": [
+        {
+          "expediteur": "Collègue Inconnu",
+          "message": "Regarde le fichier 'Bonus.exe' sur la clé USB, c'est super intéressant !",
+          "estSuspect": true,
+          "conseil": "Les fichiers exécutables (.exe) provenant de sources inconnues exécutent des virus."
+        }
+      ]
+    }
+  ]
+}

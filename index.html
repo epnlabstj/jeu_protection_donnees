@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberOS - CyberDetective Studio Expert (V21)</title>
+    <!-- Liaison de la PWA (Manifeste) -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#38bdf8">
+    <style>
+        :root {
+            --taskbar-bg: rgba(15, 23, 42, 0.9);
+            --window-bg: #1e293b;
+            --accent: #38bdf8;
+            --text: #f8fafc;
+            --muted: #94a3b8;
+            --danger: #ef4444;
+            --success: #22c55e;
+            --border: #334155;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { 
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); 
+            color: var(--text); 
+            height: 100vh; 
+            overflow: hidden; 
+            display: flex; 
+            flex-direction: column;
+            transition: background 0.4s ease;
+        }
+        body.hacked { background: #450a0a !important; }
+        body.correct-answer { background: #064e3b !important; }
+
+        #level-select-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            z-index: 100;
+            padding: 40px 20px;
+            overflow-y: auto;
+        }
+        .level-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1100px;
+            margin-top: 20px;
+        }
+        .level-card {
+            background: var(--window-bg);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+        .level-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(56, 189, 248, 0.15);
+        }
+
+        #briefing-modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 150;
+            padding: 20px;
+        }
+        .briefing-box {
+            background: var(--window-bg);
+            border: 1px solid var(--accent);
+            width: 550px;
+            max-width: 90%;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            text-align: left;
+        }
+
+        #creator-modal {
+            position: absolute;
+            top: 5%;
+            left: 10%;
+            width: 80%;
+            height: 90%;
+            background: var(--window-bg);
+            border: 1px solid var(--accent);
+            border-radius: 12px;
+            display: none;
+            flex-direction: column;
+            z-index: 250;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.7);
+        }
+
+        .desktop {
+            flex: 1;
+            padding: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            grid-auto-rows: 110px;
+            gap: 20px;
+            position: relative;
+        }
+
+        .desktop-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            padding: 10px;
+        }
+        .desktop-icon:hover {
+            background: rgba(56, 189, 248, 0.15);
+            border-color: var(--accent);
+            transform: scale(1.05);
+        }
+        .desktop-icon span { font-size: 0.8rem; margin-top: 5px; font-weight: 500; }
+
+        .window {
+            position: absolute;
+            top: 8%;
+            left: 12%;
+            width: 76%;
+            height: 78%;
+            background: var(--window-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            display: none;
+            flex-direction: column;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+        }
+        .window.active { display: flex; }
+
+        .window-header {
+            background: #0f172a;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .close-btn {
+            background: var(--danger);
+            border: none;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .window-content {
+            flex: 1;
+            padding: 25px;
+            overflow-y: auto;
+        }
+
+        taskbar {
+            height: 55px;
+            background: var(--taskbar-bg);
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .score-board { font-size: 0.9rem; font-weight: bold; color: var(--accent); }
+
+        .btn { 
+            background-color: var(--accent); 
+            color: #0f172a; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            margin-top: 10px; 
+            transition: transform 0.1s, opacity 0.2s;
+        }
+        .btn:hover { opacity: 0.9; }
+        .btn:active { transform: scale(0.97); }
+        .btn:disabled, .btn[disabled] { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .btn-danger { background-color: var(--danger); color: white; }
+        .btn-success { background-color: var(--success); color: white; }
+        
+        .card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 15px; border-radius: 8px; margin-bottom: 15px; }
+        .card:hover { border-color: var(--accent); }
+
+        .feedback { margin-top: 15px; padding: 12px; border-radius: 6px; display: none; font-weight: 500; }
+        .feedback.success { background-color: rgba(34, 197, 94, 0.2); color: var(--success); border: 1px solid var(--success); display: block; }
+        .feedback.error { background-color: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid var(--danger); display: block; }
+
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 0.9rem; color: var(--muted); margin-bottom: 5px; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: white; border-radius: 6px; }
+    </style>
+</head>
+<body>
+
+    <div id="level-select-screen">
+        <h1 style="color: var(--accent); margin-bottom: 10px;">🕵️‍♂️ CyberDetective : Menu des Affaires</h1>
+        <p style="color: var(--muted);">Sélectionnez une enquête ou gérez vos affaires dans le studio :</p>
+        <div style="margin-top: 15px; display: flex; gap: 15px;">
+            <button class="btn btn-success" onclick="ouvrirCreateurNouveau()">➕ Créer une nouvelle affaire</button>
+            <button class="btn" style="background-color: #f59e0b; color: white;" onclick="reinitialiserDonneesParDefaut()">🔄 Réinitialiser les affaires</button>
+        </div>
+        <div id="levels-container" class="level-grid"></div>
+    </div>
+
+    <!-- Briefing Modal -->
+    <div id="briefing-modal">
+        <div class="briefing-box">
+            <h2 id="briefing-title" style="color: var(--accent); margin-bottom: 15px;">💡 Briefing de Prévention</h2>
+            <p id="briefing-text" style="line-height: 1.6; margin-bottom: 25px; color: var(--text);"></p>
+            <button class="btn btn-success" style="width: 100%;" onclick="lancerMissionApresBriefing()">🚀 Commencer l'Enquête</button>
+        </div>
+    </div>
+
+    <!-- Studio Éditeur / Créateur Complet -->
+    <div id="creator-modal">
+        <div class="window-header">
+            <span id="creator-modal-title">⚙️ Studio Éditeur d'Affaire CyberDetective</span>
+            <button class="close-btn" onclick="fermerCreateur()">×</button>
+        </div>
+        <div class="window-content">
+            <input type="hidden" id="edit-aff-index" value="-1">
+            <h3 style="color: var(--accent); margin-bottom: 10px;">1. Informations Générales</h3>
+            <div class="form-group">
+                <label>ID unique de l'affaire</label>
+                <input type="text" id="edit-aff-id" placeholder="ex: affaire-perso">
+            </div>
+            <div class="form-group">
+                <label>Nom de l'affaire</label>
+                <input type="text" id="edit-aff-nom" placeholder="ex: Affaire 7 : Mon Enquête">
+            </div>
+            <div class="form-group">
+                <label>Description courte</label>
+                <textarea id="edit-aff-desc" placeholder="Résumé..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Briefing de prévention (conseil avant mission)</label>
+                <textarea id="edit-aff-brief" placeholder="Conseil bienveillant..."></textarea>
+            </div>
+
+            <hr style="border-color: var(--border); margin: 20px 0;">
+            <h3 style="color: var(--accent); margin-bottom: 10px;">2. Gestion des E-mails (Format JSON)</h3>
+            <div class="form-group">
+                <label>E-mails (JSON Array)</label>
+                <textarea id="edit-aff-emails" rows="5" placeholder='[{"id":1, "sujet":"Sujet", "expediteur":"mail@test.com", "message":"Corps...", "estPiege":true, "explication":"Raison..."}]'></textarea>
+            </div>
+
+            <hr style="border-color: var(--border); margin: 20px 0;">
+            <h3 style="color: var(--accent); margin-bottom: 10px;">3. Gestion des Scénarios Réseaux Sociaux</h3>
+            <div class="form-group">
+                <label>Réseaux Sociaux (JSON Array)</label>
+                <textarea id="edit-aff-social" rows="5" placeholder='[{"titre":"Titre", "contenu":"Post...", "question":"Question?", "options":[{"texte":"Opt 1", "correct":false},{"texte":"Opt 2", "correct":true}], "explication":"Explication..."}]'></textarea>
+            </div>
+
+            <hr style="border-color: var(--border); margin: 20px 0;">
+            <h3 style="color: var(--accent); margin-bottom: 10px;">4. Gestion des Sites Web (Navigateur)</h3>
+            <div class="form-group">
+                <label>Sites Web (JSON Array)</label>
+                <textarea id="edit-aff-sites" rows="4" placeholder='[{"url":"https://...", "nom":"Nom Site", "estSecurise":true, "indices":["HTTPS"]}]'></textarea>
+            </div>
+
+            <hr style="border-color: var(--border); margin: 20px 0;">
+            <h3 style="color: var(--accent); margin-bottom: 10px;">5. Gestion de la Messagerie Instantanée</h3>
+            <div class="form-group">
+                <label>Messages Chat (JSON Array)</label>
+                <textarea id="edit-aff-chat" rows="4" placeholder='[{"expediteur":"Inconnu", "message":"Salut...", "estSuspect":true, "conseil":"Conseil..."}]'></textarea>
+            </div>
+
+            <button class="btn btn-success" style="width: 100%; padding: 12px; margin-top: 15px;" onclick="enregistrerAffaireEditee()">💾 Sauvegarder l'Affaire</button>
+        </div>
+    </div>
+
+    <div class="desktop">
+        <div class="desktop-icon" onclick="openWindow('win-emails')">
+            <span style="font-size: 1.8rem;">📧</span>
+            <span>Boîte Mail</span>
+        </div>
+        <div class="desktop-icon" onclick="openWindow('win-social')">
+            <span style="font-size: 1.8rem;">📱</span>
+            <span>Réseaux Sociaux</span>
+        </div>
+        <div class="desktop-icon" onclick="openWindow('win-browser')">
+            <span style="font-size: 1.8rem;">🌐</span>
+            <span>Navigateur</span>
+        </div>
+        <div class="desktop-icon" onclick="openWindow('win-chat')">
+            <span style="font-size: 1.8rem;">💬</span>
+            <span>Messagerie</span>
+        </div>
+        <div class="desktop-icon" onclick="retourNiveaux()" style="background: rgba(56, 189, 248, 0.1);">
+            <span style="font-size: 1.8rem;">📂</span>
+            <span>Changer d'Affaire</span>
+        </div>
+    </div>
+
+    <div id="win-emails" class="window">
+        <div class="window-header">
+            <span>📧 Client E-mail du Suspect</span>
+            <button class="close-btn" onclick="closeWindow('win-emails')">×</button>
+        </div>
+        <div class="window-content">
+            <div id="email-list-container"></div>
+            <div id="email-detail" class="card" style="display:none; margin-top: 20px;">
+                <h3 id="mail-sujet"></h3>
+                <p id="mail-expediteur" style="font-size:0.85rem; color:var(--muted); margin: 5px 0 15px 0;"></p>
+                <p id="mail-body" style="margin-bottom: 20px;"></p>
+                <div style="display:flex; gap:10px;" id="mail-actions-container">
+                    <button class="btn btn-success" id="mail-btn-safe" onclick="jugerEmail(false)">✅ Sûr</button>
+                    <button class="btn btn-danger" id="mail-btn-trap" onclick="jugerEmail(true)">🚨 Piège (Phishing)</button>
+                </div>
+                <div id="mail-feedback" class="feedback"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="win-social" class="window">
+        <div class="window-header">
+            <span>📱 Profil Réseau Social</span>
+            <button class="close-btn" onclick="closeWindow('win-social')">×</button>
+        </div>
+        <div class="window-content" id="social-content-area"></div>
+    </div>
+
+    <div id="win-browser" class="window">
+        <div class="window-header">
+            <span>🌐 Navigateur CyberWeb</span>
+            <button class="close-btn" onclick="closeWindow('win-browser')">×</button>
+        </div>
+        <div class="window-content">
+            <p style="margin-bottom: 15px;">Analysez ces sites web ouverts dans l'historique :</p>
+            <div id="browser-container"></div>
+        </div>
+    </div>
+
+    <div id="win-chat" class="window">
+        <div class="window-header">
+            <span>💬 Messagerie Instantanée</span>
+            <button class="close-btn" onclick="closeWindow('win-chat')">×</button>
+        </div>
+        <div class="window-content" id="chat-container-area"></div>
+    </div>
+
+    <taskbar>
+        <span id="current-level-title" style="font-weight: bold; color: var(--accent);">🖥️ Affaire en cours</span>
+        <div class="score-board">Score Détective : <span id="score">0</span> pts</div>
+    </taskbar>
+
+    <script src="script.js"></script>
+    <!-- Enregistrement du Service Worker pour la PWA -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('Service Worker enregistré !', reg))
+                    .catch(err => console.log('Erreur Service Worker :', err));
+            });
+        }
+    </script>
+</body>
+</html>
